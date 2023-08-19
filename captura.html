@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tirar Foto com JavaScript</title>
+</head>
+<body>
+  <video id="camera" autoplay></video>
+  <button id="captureButton">Tirar Foto</button>
+  <canvas id="canvas"></canvas>
+
+  <script>
+    const video = document.getElementById('camera');
+    const canvas = document.getElementById('canvas');
+    const captureButton = document.getElementById('captureButton');
+
+    // Solicitar acesso à câmera
+    navigator.mediaDevices.getUserMedia({ video: true })
+      .then(function(stream) {
+        video.srcObject = stream;
+      })
+      .catch(function(error) {
+        console.error('Erro ao acessar a câmera: ', error);
+      });
+
+    // Capturar foto quando o botão for clicado
+    captureButton.addEventListener('click', function() {
+      // Desenhar o vídeo no canvas
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+      // Extrair a imagem do canvas como base64
+      const imgData = canvas.toDataURL('image/png');
+
+      // Criar um elemento de imagem para exibir a foto capturada
+      const capturedImage = new Image();
+      capturedImage.src = imgData;
+      document.body.appendChild(capturedImage);
+
+      // Criar um link de download para a imagem e simular o clique
+      const downloadLink = document.createElement('a');
+      downloadLink.href = imgData;
+      downloadLink.download = 'captured_image.png';
+      document.body.appendChild(downloadLink);
+      downloadLink.click(); // Simular o clique no link de download
+    });
+  </script>
+</body>
+</html>
