@@ -25,7 +25,7 @@ function startWebcam() {
 
 //Função de identificação
 function getLabeledFaceDescriptions() {
-  const labels = ["Matheus", "Messi"];// nome das pastas que identifica as pessoas
+  const labels = ["Matheus", "Messi", "vitoria"];// nome das pastas que identifica as pessoas
   return Promise.all(
     labels.map(async (label) => {//retorna os descritores das pessoas a serem identificadas
       const descriptions = [];
@@ -68,9 +68,31 @@ video.addEventListener("play", async () => {
     results.forEach((result, i) => {
       const box = resizedDetections[i].detection.box;
       const drawBox = new faceapi.draw.DrawBox(box, {
-        label: result,
+        label: result.toString(),
       });
       drawBox.draw(canvas);
+
+      
+
+      if (result.distance < 0.5) {
+        const identifiedLabel = result.label;
+        console.log(identifiedLabel);
+
+        if (identifiedLabel != "unknown") {
+          // Ação a ser executada para rostos identificados com rótulo conhecido
+          console.log("Acesso liberado");
+          // Faça algo específico para rostos com rótulos conhecidos
+
+        } else {
+          // Ação a ser executada para rostos desconhecidos
+          console.log("Sem permissão de acesso!");
+          // Faça algo específico para rostos desconhecidos
+        }
+
+      }
+
+
+
     });
   }, 100);
 });
