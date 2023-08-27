@@ -23,6 +23,7 @@ function startWebcam() {
 }
 
 
+
 //Função de identificação
 function getLabeledFaceDescriptions() {
   const labels = ["Matheus", "Messi", "vitoria"];// nome das pastas que identifica as pessoas
@@ -72,16 +73,27 @@ video.addEventListener("play", async () => {
       });
       drawBox.draw(canvas);
 
-      
+
 
       if (result.distance < 0.5) {
         const identifiedLabel = result.label;
         console.log(identifiedLabel);
 
         if (identifiedLabel != "unknown") {
+
           // Ação a ser executada para rostos identificados com rótulo conhecido
           console.log("Acesso liberado");
-          // Faça algo específico para rostos com rótulos conhecidos
+          // Pausa o código por 5 segundos (30000 milissegundos)
+          //simulação de entrar no condominio por exemplo
+          function sleep(milliseconds) {
+            const start = new Date().getTime();
+            while (new Date().getTime() - start < milliseconds) { }
+          }
+
+          sleep(5000);
+
+          console.log("Tempo de acesso expirado");
+
 
         } else {
           // Ação a ser executada para rostos desconhecidos
