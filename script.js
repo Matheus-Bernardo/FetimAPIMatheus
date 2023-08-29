@@ -1,6 +1,4 @@
 const video = document.getElementById("video");
-
-
 //abre a camera com os modelos para identificação e detecção ja prontos integrados na camera
 Promise.all([
   faceapi.nets.ssdMobilenetv1.loadFromUri("/models"),
@@ -21,7 +19,6 @@ function startWebcam() {
       console.error(error);
     });
 }
-
 //Função de identificação
 function getLabeledFaceDescriptions() {
   const labels = ["Matheus", "Messi", "vitoria"];// nome das pastas que identifica as pessoas
@@ -40,7 +37,6 @@ function getLabeledFaceDescriptions() {
     })
   );
 }
-
 function updateOutput(message) {
   const outputDiv = document.getElementById('output');
   outputDiv.innerHTML = message;
@@ -63,7 +59,6 @@ video.addEventListener("play", async () => {
       .withFaceDescriptors();
 
     const resizedDetections = faceapi.resizeResults(detections, displaySize);
-
     canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
     //identifica os rostos capturardos com modelos 
     const results = resizedDetections.map((d) => {
@@ -76,29 +71,25 @@ video.addEventListener("play", async () => {
       });
       drawBox.draw(canvas);
 
+      function sleep(milliseconds) {// Pausa o código por 5 segundos (30000 milissegundos) -simulação de entrar no condominio por exemplo
+        const start = new Date().getTime();
+        while (new Date().getTime() - start < milliseconds) { }
+      }
+      sleep(2000);
       if (result.distance < 0.5) {
         const identifiedLabel = result.label;
         console.log(identifiedLabel);
+
         if (identifiedLabel != "unknown") {
           // Ação a ser executada para rostos identificados com rótulo conhecido
           const accessMessage = identifiedLabel + '\nAcesso liberado';
           updateOutput(accessMessage);
           //console.log("Acesso liberado");
-          // Pausa o código por 5 segundos (30000 milissegundos) -simulação de entrar no condominio por exemplo
-
-          function sleep(milliseconds) {
-            const start = new Date().getTime();
-            while (new Date().getTime() - start < milliseconds) { }
-          }
-          sleep(5000);
           console.log("Tempo de acesso expirado");
-
-        } else {
-          // Ação a ser executada para rostos desconhecidos
-          //console.log("Sem permissão de acesso!");
-          const deniedMessage = 'Sem permissão de acesso!';
-          updateOutput(deniedMessage);
         }
+      } else {
+        const deniedMessage = 'Sem permissão de acesso!';
+        updateOutput(deniedMessage);
       }
     });
   }, 100);
