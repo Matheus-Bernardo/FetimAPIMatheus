@@ -102,7 +102,6 @@ video.addEventListener("play", async () => {
           const deniedMessage = 'Sem permissão de acesso!';
           addMessageToOutput(deniedMessage);
         }
-
       }
     });
   }, 100);
