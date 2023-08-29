@@ -41,11 +41,9 @@ function getLabeledFaceDescriptions() {
   );
 }
 
-function addMessageToOutput(message) {
+function updateOutput(message) {
   const outputDiv = document.getElementById('output');
-  const messageParagraph = document.createElement('p');
-  messageParagraph.textContent = message;
-  outputDiv.appendChild(messageParagraph);
+  outputDiv.innerHTML = message;
 }
 
 video.addEventListener("play", async () => {
@@ -84,7 +82,7 @@ video.addEventListener("play", async () => {
         if (identifiedLabel != "unknown") {
           // Ação a ser executada para rostos identificados com rótulo conhecido
           const accessMessage = identifiedLabel + '\nAcesso liberado';
-          addMessageToOutput(accessMessage);
+          updateOutput(accessMessage);
           //console.log("Acesso liberado");
           // Pausa o código por 5 segundos (30000 milissegundos) -simulação de entrar no condominio por exemplo
 
@@ -99,7 +97,7 @@ video.addEventListener("play", async () => {
           // Ação a ser executada para rostos desconhecidos
           //console.log("Sem permissão de acesso!");
           const deniedMessage = 'Sem permissão de acesso!';
-          addMessageToOutput(deniedMessage);
+          updateOutput(deniedMessage);
         }
       }
     });
