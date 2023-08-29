@@ -41,6 +41,13 @@ function getLabeledFaceDescriptions() {
   );
 }
 
+function addMessageToOutput(message) {
+  const outputDiv = document.getElementById('output');
+  const messageParagraph = document.createElement('p');
+  messageParagraph.textContent = message;
+  outputDiv.appendChild(messageParagraph);
+}
+
 video.addEventListener("play", async () => {
   const labeledFaceDescriptors = await getLabeledFaceDescriptions();
   const faceMatcher = new faceapi.FaceMatcher(labeledFaceDescriptors);
@@ -71,18 +78,17 @@ video.addEventListener("play", async () => {
       });
       drawBox.draw(canvas);
 
-
-
       if (result.distance < 0.5) {
         const identifiedLabel = result.label;
         console.log(identifiedLabel);
 
         if (identifiedLabel != "unknown") {
-
           // Ação a ser executada para rostos identificados com rótulo conhecido
-          console.log("Acesso liberado");
-          // Pausa o código por 5 segundos (30000 milissegundos)
-          //simulação de entrar no condominio por exemplo
+          const accessMessage = identifiedLabel + '\nAcesso liberado';
+          addMessageToOutput(accessMessage);
+          //console.log("Acesso liberado");
+          // Pausa o código por 5 segundos (30000 milissegundos) -simulação de entrar no condominio por exemplo
+
           function sleep(milliseconds) {
             const start = new Date().getTime();
             while (new Date().getTime() - start < milliseconds) { }
@@ -92,8 +98,9 @@ video.addEventListener("play", async () => {
 
         } else {
           // Ação a ser executada para rostos desconhecidos
-          console.log("Sem permissão de acesso!");
-          // Faça algo específico para rostos desconhecidos
+          //console.log("Sem permissão de acesso!");
+          const deniedMessage = 'Sem permissão de acesso!';
+          addMessageToOutput(deniedMessage);
         }
 
       }
