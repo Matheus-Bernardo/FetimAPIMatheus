@@ -81,7 +81,6 @@ video.addEventListener("play", async () => {
       if (result.distance < 0.5) {
         const identifiedLabel = result.label;
         console.log(identifiedLabel);
-
         if (identifiedLabel != "unknown") {
           // Ação a ser executada para rostos identificados com rótulo conhecido
           const accessMessage = identifiedLabel + '\nAcesso liberado';
