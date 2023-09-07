@@ -9,7 +9,7 @@ gitHub: https://github.com/Matheus-Bernardo
 import shutil
 import re
 import os
-
+import json
 
 #declaração de variaveis
 novoUser = input("Digite seu nome: ")
@@ -61,11 +61,36 @@ def rename():
         contador += 1
 
 
+diretorio_raiz = "labels"
+
+# Função para varrer os nomes das pastas e subpastas e criar uma estrutura de dados
+def varrer_pastas(diretorio):
+    data = []
+    for pasta_raiz, subpastas, arquivos in os.walk(diretorio):
+        for subpasta in subpastas:
+            data.append(subpasta)
+    return data
+
+
+
+
+
 create_dir()
 move_capture()
 rename()
 
+# Chama a função para varrer as pastas
+nomes_de_pastas = varrer_pastas(diretorio_raiz)
+print(nomes_de_pastas)
 
+# Cria um dicionário com os nomes das pastas
+dados_json = {"labels": nomes_de_pastas}
+
+# Escreve os dados em um arquivo JSON
+with open("bd.json", "w") as arquivo_json:
+    json.dump(dados_json, arquivo_json)
+
+print("Nomes das pastas foram salvos em 'bd.json'.")
 
 
 
